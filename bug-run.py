@@ -55,18 +55,20 @@ def game_loop():
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
-    thing_startx = random.randrange(0, display_width)
-    thing_starty = -600
+
+    levels = LvlReader.LevelReader().readInLevel('level1')
+
+    # Need to set the values outside the loop, maybe pop out of the loop every object?    
+    thing_startx = levels[0]['x']
+    thing_starty = levels[0]['y']
+    thing_width = levels[0]['w']
+    thing_height = levels[0]['h']
     thing_speed = 7
-    thing_width = 100
-    thing_height = 100
 
     thingCount = 1
     dodged = 0
 
     gameExit = False
-
-    levels = LvlReader.LevelReader().readInLevel('level1')
 
     while not gameExit:
 
@@ -87,8 +89,6 @@ def game_loop():
         x += x_change
 
         gameDisplay.fill(white)
-        # things(thingx, thingy, thingw, thingh, color)
-        # print(result[0]['x'])
         things(thing_startx, thing_starty, thing_width, thing_height, black)
         thing_starty += thing_speed
         bug(x,y)
