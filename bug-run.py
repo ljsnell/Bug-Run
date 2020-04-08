@@ -1,6 +1,7 @@
 import time
 import random
 import pygame
+import LvlReader
 
 pygame.init()
 
@@ -65,6 +66,8 @@ def game_loop():
 
     gameExit = False
 
+    levels = LvlReader.LevelReader().readInLevel('level1')
+
     while not gameExit:
 
         for event in pygame.event.get():
@@ -85,6 +88,7 @@ def game_loop():
 
         gameDisplay.fill(white)
         # things(thingx, thingy, thingw, thingh, color)
+        # print(result[0]['x'])
         things(thing_startx, thing_starty, thing_width, thing_height, black)
         thing_starty += thing_speed
         bug(x,y)
@@ -101,10 +105,7 @@ def game_loop():
             thing_width += (dodged * 1.2)
 
         if y < thing_starty+thing_height:
-            print('y crossover')
-
             if x > thing_startx and x < thing_startx + thing_width or x+bug_width > thing_startx and x + bug_width < thing_startx+thing_width:
-                print('x crossover')
                 crash()
 
         pygame.display.update()
