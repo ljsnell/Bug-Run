@@ -89,7 +89,7 @@ def game_loop():
                 x += x_change
     
                 gameDisplay.fill(white)
-                things(block['x'], thing_starty, thing_width, thing_height, black)
+                things(block['x'], thing_starty, block['w'], block['h'], black)
                 thing_starty += thing_speed
                 bug(x,y)
                 things_dodged(dodged)
