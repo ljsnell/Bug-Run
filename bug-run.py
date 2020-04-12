@@ -63,7 +63,7 @@ def game_loop():
     thing_starty = levels[0]['y']
     thing_width = levels[0]['w']
     thing_height = levels[0]['h']
-    thing_speed = 7
+    thing_speed = levels[0]['s']
 
     thingCount = 1
     dodged = 0
@@ -71,7 +71,7 @@ def game_loop():
     gameExit = False
 
     while not gameExit:
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
