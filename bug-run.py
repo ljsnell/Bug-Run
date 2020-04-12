@@ -67,50 +67,51 @@ def game_loop():
 
     thingCount = 1
     dodged = 0
-
-    gameExit = False
-
-    while not gameExit:
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x_change = -5
-                elif event.key == pygame.K_RIGHT:
-                    x_change = 5
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    x_change = 0        
-        x += x_change
-
-        gameDisplay.fill(white)
-        things(thing_startx, thing_starty, thing_width, thing_height, black)
-        thing_starty += thing_speed
-        bug(x,y)
-        things_dodged(dodged)
-
-        if x > display_width - bug_width or x < 0:
-            crash()
-
-        if thing_starty > display_height:
-            thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0,display_width)
-            dodged += 1
-            thing_speed += 1
-            thing_width += (dodged * 1.2)
-
-        if y < thing_starty+thing_height:
-            if x > thing_startx and x < thing_startx + thing_width or x+bug_width > thing_startx and x + bug_width < thing_startx+thing_width:
-                crash()
-
-        pygame.display.update()
-        clock.tick(60)
-
+    
+    for block in levels:
+        print(block['id'])
+        nextBlock = False
+        while not nextBlock:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        quit()
+    
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_LEFT:
+                            x_change = -5
+                        elif event.key == pygame.K_RIGHT:
+                            x_change = 5
+    
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                            x_change = 0        
+                x += x_change
+    
+                gameDisplay.fill(white)
+                things(thing_startx, thing_starty, thing_width, thing_height, black)
+                thing_starty += thing_speed
+                bug(x,y)
+                things_dodged(dodged)
+    
+                if x > display_width - bug_width or x < 0:
+                    crash()
+    
+                if thing_starty > display_height:
+                    thing_starty = 0 - thing_height
+                    thing_startx = random.randrange(0,display_width)
+                    dodged += 1
+                    thing_speed += 1
+                    thing_width += (dodged * 1.2)
+                    nextBlock = True
+    
+                if y < thing_starty+thing_height:
+                    if x > thing_startx and x < thing_startx + thing_width or x+bug_width > thing_startx and x + bug_width < thing_startx+thing_width:
+                        crash()
+    
+                pygame.display.update()
+                clock.tick(60)
+    
 game_loop()
 pygame.quit()
 quit()
