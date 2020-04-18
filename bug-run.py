@@ -2,6 +2,8 @@ import time
 import random
 import pygame
 import LvlReader
+import button_handler
+button_creator = button_handler.Button_Handler()
 
 pygame.init()
 
@@ -14,7 +16,14 @@ pygame.display.set_caption('Bug Run')
 
 black = (0,0,0)
 white = (255,255,255)
+red = (200,0,0)
+green = (0,200,0)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
+
 bug_width = 44
+
+pause = False
 
 clock = pygame.time.Clock()
 crashed = False
@@ -26,17 +35,20 @@ def game_intro():
     intro = True
 
     while intro:
-        for event in pygame.event.get():
-            print(event)
+        for event in pygame.event.get():            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
                 
         gameDisplay.fill(white)
         largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = text_objects("A bit Racey", largeText)
+        TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
+        
+        button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
+
         pygame.display.update()
         clock.tick(15)
 
@@ -46,23 +58,21 @@ def things(thingx, thingy, thingw, thingh, color):
 def bug(x,y):
     gameDisplay.blit(bugImg, (x,y))
 
+def quitgame():
+    pygame.quit()
+    quit()
+
 def things_dodged(count):
     font = pygame.font.SysFont(None, 25)
     text = font.render("Dodged: "+str(count), True, black)
     gameDisplay.blit(text,(0,0))
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, black)
-    return textSurface, textSurface.get_rect()
-
 def message_display(text):
     largeText = pygame.font.Font('freesansbold.ttf',115)
-    TextSurf, TextRect = text_objects(text, largeText)
+    TextSurf, TextRect = button_creator.text_objects(text, largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
-
     pygame.display.update()
-
     time.sleep(2)
 
     game_loop()
@@ -70,14 +80,39 @@ def message_display(text):
 def crash():
     message_display('You Crashed')
 
+def paused():
+    largeText = pygame.font.SysFont("comicsansms",115)
+    TextSurf, TextRect = button_creator.text_objects("Paused", largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    
+    print("pause")
+    print(pause)
+    while pause:
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        
+        button_creator.button(gameDisplay, "Continue",150,450,100,50,green,bright_green,unpause)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
+
+        pygame.display.update()
+        clock.tick(15)
+
+def unpause():
+    global pause
+    pause = False
+
 def game_loop():
+    global pause
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
 
     levels = LvlReader.LevelReader().readInLevel('level1')
 
-    # Need to set the values outside the loop, maybe pop out of the loop every object?    
     thing_startx = levels[0]['x']
     thing_starty = levels[0]['y']
     thing_width = levels[0]['w']
@@ -99,8 +134,11 @@ def game_loop():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             x_change = -5
-                        elif event.key == pygame.K_RIGHT:
+                        if event.key == pygame.K_RIGHT:
                             x_change = 5
+                        if event.key == pygame.K_p:
+                            pause = True
+                            paused()
     
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -127,8 +165,8 @@ def game_loop():
     
                 pygame.display.update()
                 clock.tick(60)
-
-#game_intro()
+# https://pythonprogramming.net/placing-text-pygame-buttons/?completed=/making-interactive-pygame-buttons/
+game_intro()
 game_loop()
 pygame.quit()
 quit()
