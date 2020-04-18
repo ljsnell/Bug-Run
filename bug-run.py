@@ -14,6 +14,11 @@ pygame.display.set_caption('Bug Run')
 
 black = (0,0,0)
 white = (255,255,255)
+red = (255,0,0)
+green = (0,200,0)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
+
 bug_width = 44
 
 clock = pygame.time.Clock()
@@ -26,17 +31,40 @@ def game_intro():
     intro = True
 
     while intro:
-        for event in pygame.event.get():
-            print(event)
+        for event in pygame.event.get():            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
                 
         gameDisplay.fill(white)
         largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = text_objects("A bit Racey", largeText)
+        TextSurf, TextRect = text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
+        #pygame.draw.rect(gameDisplay, green,(150,450,100,50))
+        #pygame.draw.rect(gameDisplay, red,(550,450,100,50))
+        
+        mouse = pygame.mouse.get_pos()
+
+        if 150+100 > mouse[0] > 150 and 450+50 > mouse[1] > 450:
+            pygame.draw.rect(gameDisplay, bright_green, (150,450,100,50))
+        else:
+            pygame.draw.rect(gameDisplay, green, (150,450,100,50))
+        pygame.draw.rect(gameDisplay, red, (550,450,100,50))
+
+        # Go button text
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurf, textRect = text_objects("GO!", smallText)
+        textRect.center = ((150+(100/2)), (450+(50/2)))
+        gameDisplay.blit(textSurf, textRect)
+
+        # Quit button text
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurf, textRect = text_objects("QUIT", smallText)
+        textRect.center = ((550+(100/2)), (450+(50/2)))
+        gameDisplay.blit(textSurf, textRect)
+
+
         pygame.display.update()
         clock.tick(15)
 
@@ -127,8 +155,8 @@ def game_loop():
     
                 pygame.display.update()
                 clock.tick(60)
-
-#game_intro()
+# https://pythonprogramming.net/placing-text-pygame-buttons/?completed=/making-interactive-pygame-buttons/
+game_intro()
 game_loop()
 pygame.quit()
 quit()
