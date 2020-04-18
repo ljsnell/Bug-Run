@@ -23,6 +23,8 @@ bright_green = (0,255,0)
 
 bug_width = 44
 
+pause = False
+
 clock = pygame.time.Clock()
 crashed = False
 bugImg = pygame.image.load('Bug1.png')
@@ -78,7 +80,33 @@ def message_display(text):
 def crash():
     message_display('You Crashed')
 
+def paused():
+    largeText = pygame.font.SysFont("comicsansms",115)
+    TextSurf, TextRect = button_creator.text_objects("Paused", largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    
+    print("pause")
+    print(pause)
+    while pause:
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        
+        button_creator.button(gameDisplay, "Continue",150,450,100,50,green,bright_green,unpause)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
+
+        pygame.display.update()
+        clock.tick(15)
+
+def unpause():
+    global pause
+    pause = False
+
 def game_loop():
+    global pause
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
@@ -106,8 +134,11 @@ def game_loop():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             x_change = -5
-                        elif event.key == pygame.K_RIGHT:
+                        if event.key == pygame.K_RIGHT:
                             x_change = 5
+                        if event.key == pygame.K_p:
+                            pause = True
+                            paused()
     
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
