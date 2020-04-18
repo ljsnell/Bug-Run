@@ -2,6 +2,8 @@ import time
 import random
 import pygame
 import LvlReader
+import button_handler
+button_creator = button_handler.Button_Handler()
 
 pygame.init()
 
@@ -14,7 +16,7 @@ pygame.display.set_caption('Bug Run')
 
 black = (0,0,0)
 white = (255,255,255)
-red = (255,0,0)
+red = (200,0,0)
 green = (0,200,0)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
@@ -38,33 +40,13 @@ def game_intro():
                 
         gameDisplay.fill(white)
         largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = text_objects("Bug Run", largeText)        
+        TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
-        #pygame.draw.rect(gameDisplay, green,(150,450,100,50))
-        #pygame.draw.rect(gameDisplay, red,(550,450,100,50))
         
-        mouse = pygame.mouse.get_pos()
-
-        if 150+100 > mouse[0] > 150 and 450+50 > mouse[1] > 450:
-            pygame.draw.rect(gameDisplay, bright_green, (150,450,100,50))
-        else:
-            pygame.draw.rect(gameDisplay, green, (150,450,100,50))
-        pygame.draw.rect(gameDisplay, red, (550,450,100,50))
-
-        # Go button text
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurf, textRect = text_objects("GO!", smallText)
-        textRect.center = ((150+(100/2)), (450+(50/2)))
-        gameDisplay.blit(textSurf, textRect)
-
-        # Quit button text
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurf, textRect = text_objects("QUIT", smallText)
-        textRect.center = ((550+(100/2)), (450+(50/2)))
-        gameDisplay.blit(textSurf, textRect)
-
-
+        button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red)
+        
         pygame.display.update()
         clock.tick(15)
 
@@ -79,13 +61,9 @@ def things_dodged(count):
     text = font.render("Dodged: "+str(count), True, black)
     gameDisplay.blit(text,(0,0))
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, black)
-    return textSurface, textSurface.get_rect()
-
 def message_display(text):
     largeText = pygame.font.Font('freesansbold.ttf',115)
-    TextSurf, TextRect = text_objects(text, largeText)
+    TextSurf, TextRect = button_creator.text_objects(text, largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
 
