@@ -44,9 +44,9 @@ def game_intro():
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
         
-        button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green)
-        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red)
-        
+        button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
+
         pygame.display.update()
         clock.tick(15)
 
@@ -55,6 +55,10 @@ def things(thingx, thingy, thingw, thingh, color):
 
 def bug(x,y):
     gameDisplay.blit(bugImg, (x,y))
+
+def quitgame():
+    pygame.quit()
+    quit()
 
 def things_dodged(count):
     font = pygame.font.SysFont(None, 25)
@@ -66,9 +70,7 @@ def message_display(text):
     TextSurf, TextRect = button_creator.text_objects(text, largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
-
     pygame.display.update()
-
     time.sleep(2)
 
     game_loop()
@@ -83,7 +85,6 @@ def game_loop():
 
     levels = LvlReader.LevelReader().readInLevel('level1')
 
-    # Need to set the values outside the loop, maybe pop out of the loop every object?    
     thing_startx = levels[0]['x']
     thing_starty = levels[0]['y']
     thing_width = levels[0]['w']
