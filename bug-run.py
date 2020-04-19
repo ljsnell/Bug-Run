@@ -77,9 +77,6 @@ def message_display(text):
 
     game_loop()
 
-def crash():
-    message_display('You Crashed')
-
 def paused():
     largeText = pygame.font.SysFont("comicsansms",115)
     TextSurf, TextRect = button_creator.text_objects("Paused", largeText)
@@ -104,6 +101,28 @@ def paused():
 def unpause():
     global pause
     pause = False
+
+def crash():    
+    largeText = pygame.font.SysFont("comicsansms",115)
+    TextSurf, TextRect = button_creator.text_objects("You Crashed", largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    
+
+    while True:
+        for event in pygame.event.get():
+            #print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        #gameDisplay.fill(white)
+        
+        button_creator.button(gameDisplay, "Play Again",150,450,150,50,green,bright_green,game_loop)
+        button_creator.button(gameDisplay, "Quit",550,450,100,50,red,bright_red,quitgame)
+
+        pygame.display.update()
+        clock.tick(15) 
 
 def game_loop():
     global pause
@@ -165,7 +184,7 @@ def game_loop():
     
                 pygame.display.update()
                 clock.tick(60)
-# https://pythonprogramming.net/placing-text-pygame-buttons/?completed=/making-interactive-pygame-buttons/
+# https://pythonprogramming.net/pause-game-pygame/?completed=/converting-pygame-executable-cx_freeze/
 game_intro()
 game_loop()
 pygame.quit()
