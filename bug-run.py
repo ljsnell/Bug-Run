@@ -30,8 +30,10 @@ crashed = False
 bugImg = pygame.image.load('Bug1.png')
 bugImg = pygame.transform.scale(bugImg, (44, 44))
 
-def game_intro():
+levelPassed = False
 
+def game_intro():
+    global levelPassed
     intro = True
 
     while intro:
@@ -45,8 +47,11 @@ def game_intro():
         TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
-        
-        button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
+        if levelPassed == False:
+            button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
+        else:
+            button_creator.button(gameDisplay, "Next Level!", 150, 450, 125, 50, green, bright_green, game_loop)
+
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
         pygame.display.update()
@@ -82,9 +87,7 @@ def paused():
     TextSurf, TextRect = button_creator.text_objects("Paused", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
-    
-    print("pause")
-    print(pause)
+
     while pause:
         for event in pygame.event.get():
 
@@ -111,7 +114,6 @@ def crash():
 
     while True:
         for event in pygame.event.get():
-            #print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
@@ -126,6 +128,7 @@ def crash():
 
 def game_loop():
     global pause
+    global levelPassed
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
@@ -142,7 +145,6 @@ def game_loop():
     dodged = 0
     
     for block in levels:
-        print(block['id'])
         nextBlock = False
         while not nextBlock:
                 for event in pygame.event.get():
@@ -184,7 +186,10 @@ def game_loop():
     
                 pygame.display.update()
                 clock.tick(60)
+    levelPassed = True
+
 # https://pythonprogramming.net/pause-game-pygame/?completed=/converting-pygame-executable-cx_freeze/
+
 game_intro()
 game_loop()
 pygame.quit()
