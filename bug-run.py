@@ -26,7 +26,6 @@ bug_width = 44
 pause = False
 
 clock = pygame.time.Clock()
-crashed = False
 bugImg = pygame.image.load('Bug1.png')
 bugImg = pygame.transform.scale(bugImg, (44, 44))
 
@@ -106,25 +105,27 @@ def unpause():
     pause = False
 
 def crash():    
+    global levelPassed
     largeText = pygame.font.SysFont("comicsansms",115)
     TextSurf, TextRect = button_creator.text_objects("You Crashed", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
+    levelPassed = False
     
-
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-                
-        #gameDisplay.fill(white)
-        
-        button_creator.button(gameDisplay, "Play Again",150,450,150,50,green,bright_green,game_loop)
+        if levelPassed == False:
+            button_creator.button(gameDisplay, "Play Again",150,450,150,50,green,bright_green,game_loop)
+        else:
+            button_creator.button(gameDisplay, "Next Level",150,450,150,50,green,bright_green,game_loop)
         button_creator.button(gameDisplay, "Quit",550,450,100,50,red,bright_red,quitgame)
 
         pygame.display.update()
-        clock.tick(15) 
+        clock.tick(15)
+    levelPassed = False
 
 def game_loop():
     global pause
@@ -187,6 +188,7 @@ def game_loop():
                 pygame.display.update()
                 clock.tick(60)
     levelPassed = True
+
 
 # https://pythonprogramming.net/pause-game-pygame/?completed=/converting-pygame-executable-cx_freeze/
 
