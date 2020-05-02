@@ -3,9 +3,9 @@ import random
 import pygame
 import LvlReader
 import button_handler
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
+import level_selector
 
+level_selector = level_selector.Level_Selector()
 button_creator = button_handler.Button_Handler()
 
 pygame.init()
@@ -57,7 +57,7 @@ def game_intro():
 
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
-        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, yellow, bright_yellow, lvlSelector)
+        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, yellow, bright_yellow, level_selector.lvlSelector)
 
         pygame.display.update()
         clock.tick(15)
@@ -67,12 +67,6 @@ def things(thingx, thingy, thingw, thingh, color):
 
 def bug(x,y):
     gameDisplay.blit(bugImg, (x,y))
-
-def lvlSelector():
-    print("In lvl selector")
-    Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-    filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-    print(filename)
 
 def quitgame():
     pygame.quit()
