@@ -3,6 +3,8 @@ import random
 import pygame
 import LvlReader
 import button_handler
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 
 button_creator = button_handler.Button_Handler()
 
@@ -68,6 +70,9 @@ def bug(x,y):
 
 def lvlSelector():
     print("In lvl selector")
+    Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+    filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
+    print(filename)
 
 def quitgame():
     pygame.quit()
