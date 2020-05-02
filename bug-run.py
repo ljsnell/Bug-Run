@@ -3,6 +3,7 @@ import random
 import pygame
 import LvlReader
 import button_handler
+
 button_creator = button_handler.Button_Handler()
 
 pygame.init()
@@ -33,8 +34,7 @@ levelPassed = False
 
 def game_intro():
     global levelPassed
-    intro = True
-
+    intro = True    
     while intro:
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:
@@ -53,6 +53,8 @@ def game_intro():
 
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
+        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, red, bright_red, lvlSelector)
+
         pygame.display.update()
         clock.tick(15)
 
@@ -61,6 +63,9 @@ def things(thingx, thingy, thingw, thingh, color):
 
 def bug(x,y):
     gameDisplay.blit(bugImg, (x,y))
+
+def lvlSelector():
+    print("In lvl selector")
 
 def quitgame():
     pygame.quit()
