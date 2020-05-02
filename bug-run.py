@@ -17,10 +17,12 @@ pygame.display.set_caption('Bug Run')
 
 black = (0,0,0)
 white = (255,255,255)
-red = (200,0,0)
 green = (0,200,0)
-bright_red = (255,0,0)
 bright_green = (0,255,0)
+red = (200,0,0)
+bright_red = (255,0,0)
+yellow = (230, 230, 0)
+bright_yellow = (255, 255, 0)
 
 bug_width = 44
 
@@ -53,7 +55,7 @@ def game_intro():
 
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
-        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, red, bright_red, lvlSelector)
+        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, yellow, bright_yellow, lvlSelector)
 
         pygame.display.update()
         clock.tick(15)
