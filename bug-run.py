@@ -3,6 +3,9 @@ import random
 import pygame
 import LvlReader
 import button_handler
+import level_selector
+
+level_selector = level_selector.Level_Selector()
 button_creator = button_handler.Button_Handler()
 
 pygame.init()
@@ -16,10 +19,12 @@ pygame.display.set_caption('Bug Run')
 
 black = (0,0,0)
 white = (255,255,255)
-red = (200,0,0)
 green = (0,200,0)
-bright_red = (255,0,0)
 bright_green = (0,255,0)
+red = (200,0,0)
+bright_red = (255,0,0)
+yellow = (230, 230, 0)
+bright_yellow = (255, 255, 0)
 
 bug_width = 44
 
@@ -30,11 +35,11 @@ bugImg = pygame.image.load('Bug1.png')
 bugImg = pygame.transform.scale(bugImg, (44, 44))
 
 levelPassed = False
+level_to_play = 'level1.json'
 
 def game_intro():
     global levelPassed
-    intro = True
-
+    intro = True    
     while intro:
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:
@@ -53,8 +58,15 @@ def game_intro():
 
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
+        button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, yellow, bright_yellow, pickLvl)
+
         pygame.display.update()
         clock.tick(15)
+
+def pickLvl():
+    global level_to_play
+    level_to_play = level_selector.lvlSelector()
+    print(level_to_play)
 
 def things(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
@@ -133,8 +145,8 @@ def game_loop():
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
-
-    levels = LvlReader.LevelReader().readInLevel('level1')
+    
+    levels = LvlReader.LevelReader().readInLevel(level_to_play)
 
     thing_startx = levels[0]['x']
     thing_starty = levels[0]['y']
