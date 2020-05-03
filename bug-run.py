@@ -46,7 +46,13 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    if levelPassed == False:
+                        game_loop()
+                    else:
+                        nextLevel()
+
         gameDisplay.fill(white)
         largeText = pygame.font.Font('freesansbold.ttf',115)
         TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
