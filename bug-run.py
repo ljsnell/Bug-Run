@@ -36,6 +36,7 @@ bugImg = pygame.transform.scale(bugImg, (44, 44))
 
 levelPassed = False
 level_to_play = 'level1.json'
+level_counter = 0
 
 def game_intro():
     global levelPassed
@@ -54,7 +55,7 @@ def game_intro():
         if levelPassed == False:
             button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
         else:
-            button_creator.button(gameDisplay, "Next Level!", 150, 450, 125, 50, green, bright_green, game_loop)
+            button_creator.button(gameDisplay, "Next Level!", 150, 450, 125, 50, green, bright_green, nextLevel)
 
         button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
 
@@ -62,6 +63,16 @@ def game_intro():
 
         pygame.display.update()
         clock.tick(15)
+
+def nextLevel():
+    global level_to_play
+    global level_counter
+    level_counter = level_counter + 1
+    print("level counter")
+    print(level_counter)
+    levels = ['level1.json', 'level2.json', 'level3.json']
+    level_to_play = levels[level_counter]
+    game_loop()
 
 def pickLvl():
     global level_to_play
