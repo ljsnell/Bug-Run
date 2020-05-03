@@ -180,7 +180,7 @@ def game_loop():
                 x += x_change
     
                 gameDisplay.fill(white)
-                things(block['x'], thing_starty, block['w'], block['h'], black)
+                things(block['x'], thing_starty, block['w'], block['h'], tuple(block['color']))
                 thing_starty += block['s']
                 bug(x,y)
                 things_dodged(dodged)
