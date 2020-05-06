@@ -74,16 +74,17 @@ def nextLevel():
     global level_to_play
     global level_counter
     level_counter = level_counter + 1
-    print("level counter")
-    print(level_counter)
     levels = ['level1.json', 'level2.json', 'level3.json']
-    level_to_play = levels[level_counter]
+    try:
+        level_to_play = levels[level_counter]
+    except:
+        level_counter = 0
+        level_to_play = levels[level_counter]
     game_loop()
 
 def pickLvl():
     global level_to_play
     level_to_play = level_selector.lvlSelector()
-    print(level_to_play)
 
 def things(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
@@ -146,10 +147,16 @@ def crash():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    if levelPassed == False:
+                        game_loop()
+                    else:
+                        nextLevel()
         if levelPassed == False:
             button_creator.button(gameDisplay, "Play Again",150,450,150,50,green,bright_green,game_loop)
         else:
-            button_creator.button(gameDisplay, "Next Level",150,450,150,50,green,bright_green,game_loop)
+            button_creator.button(gameDisplay, "Next Level",150,450,150,50,green,bright_green,nextLevel)
         button_creator.button(gameDisplay, "Quit",550,450,100,50,red,bright_red,quitgame)
 
         pygame.display.update()
