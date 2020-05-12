@@ -18,5 +18,6 @@ class Drawing_Handler():
         pygame.display.update()
         time.sleep(2)
     
-    def things(self, gameDisplay, thingx, thingy, thingw, thingh, color):
-        pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
+    def things(self, gameDisplay, thing_starty, block_list):
+        for block in block_list:
+            pygame.draw.rect(gameDisplay, tuple(block['color']), [block['x'], thing_starty, block['w'], block['h']])

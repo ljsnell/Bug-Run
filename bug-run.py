@@ -154,16 +154,12 @@ def game_loop():
     
     levels = lvl_reader.LevelReader().readInLevel(level_to_play)
 
-    thing_startx = levels[0]['x']
-    thing_starty = levels[0]['y']
-    thing_width = levels[0]['w']
-    thing_height = levels[0]['h']
-    thing_speed = levels[0]['s']
+    thing_starty = -600
 
     thingCount = 1
     dodged = 0
     
-    for block in levels:
+    for block_list in levels:
         nextBlock = False
         while not nextBlock:
                 for event in pygame.event.get():
@@ -186,8 +182,8 @@ def game_loop():
                 x += x_change
     
                 gameDisplay.fill(white)
-                drawing_creator.things(gameDisplay, block['x'], thing_starty, block['w'], block['h'], tuple(block['color']))
-                thing_starty += block['s']
+                drawing_creator.things(gameDisplay, thing_starty, block_list)
+                thing_starty += block_list[0]['s']
                 drawing_creator.bug(gameDisplay, x,y)
                 dodge_handler.things_dodged(gameDisplay, dodged)
     
@@ -195,12 +191,13 @@ def game_loop():
                     crash()
     
                 if thing_starty > display_height:
-                    thing_starty = 0 - thing_height                    
+                    thing_starty = 0 - block_list[0]['h']
                     dodged += 1
                     nextBlock = True
     
-                if y < thing_starty+thing_height:
-                    if x > block['x'] and x < block['x'] + block['w'] or x+bug_width > block['x'] and x + bug_width < block['x']+block['w']:
+                if y < thing_starty+block_list[0]['h']:
+                    if x > block_list[0]['x'] and x < block_list[0]['x'] + block_list[0]['w']\
+                        or x+bug_width > block_list[0]['x'] and x + bug_width < block_list[0]['x']+block_list[0]['w']:
                         crash()
     
                 pygame.display.update()
