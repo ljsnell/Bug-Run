@@ -1,12 +1,17 @@
-import time
 import random
 import pygame
-import LvlReader
+import lvl_reader
 import button_handler
 import level_selector
+import dodge_counter
+import drawing_handler
+import quit_game
 
+dodge_handler = dodge_counter.Dodge_Handler()
 level_selector = level_selector.Level_Selector()
 button_creator = button_handler.Button_Handler()
+drawing_creator = drawing_handler.Drawing_Handler()
+quitter = quit_game.Quit()
 
 pygame.init()
 
@@ -31,8 +36,6 @@ bug_width = 44
 pause = False
 
 clock = pygame.time.Clock()
-bugImg = pygame.image.load('Bug1.png')
-bugImg = pygame.transform.scale(bugImg, (44, 44))
 
 levelPassed = False
 level_to_play = 'level1.json'
@@ -58,13 +61,13 @@ def game_intro():
         TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
+
         if levelPassed == False:
             button_creator.button(gameDisplay, "GO!", 150, 450, 100, 50, green, bright_green, game_loop)
         else:
             button_creator.button(gameDisplay, "Next Level!", 150, 450, 125, 50, green, bright_green, nextLevel)
 
-        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
-
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitter.quitgame)
         button_creator.button(gameDisplay, "Select Level", 0, 0, 150, 50, yellow, bright_yellow, pickLvl)
 
         pygame.display.update()
@@ -86,29 +89,8 @@ def pickLvl():
     global level_to_play
     level_to_play = level_selector.lvlSelector()
 
-def things(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
-
-def bug(x,y):
-    gameDisplay.blit(bugImg, (x,y))
-
-def quitgame():
-    pygame.quit()
-    quit()
-
-def things_dodged(count):
-    font = pygame.font.SysFont(None, 25)
-    text = font.render("Dodged: "+str(count), True, black)
-    gameDisplay.blit(text,(0,0))
-
 def message_display(text):
-    largeText = pygame.font.Font('freesansbold.ttf',115)
-    TextSurf, TextRect = button_creator.text_objects(text, largeText)
-    TextRect.center = ((display_width/2),(display_height/2))
-    gameDisplay.blit(TextSurf, TextRect)
-    pygame.display.update()
-    time.sleep(2)
-
+    drawing_handler.text_display(text, gameDisplay, display_width, display_height)
     game_loop()
 
 def paused():
@@ -125,7 +107,7 @@ def paused():
                 quit()
         
         button_creator.button(gameDisplay, "Continue",150,450,100,50,green,bright_green,unpause)
-        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitgame)
+        button_creator.button(gameDisplay, "QUIT", 550, 450, 100, 50, red, bright_red, quitter.quitgame)
 
         pygame.display.update()
         clock.tick(15)
@@ -157,7 +139,7 @@ def crash():
             button_creator.button(gameDisplay, "Play Again",150,450,150,50,green,bright_green,game_loop)
         else:
             button_creator.button(gameDisplay, "Next Level",150,450,150,50,green,bright_green,nextLevel)
-        button_creator.button(gameDisplay, "Quit",550,450,100,50,red,bright_red,quitgame)
+        button_creator.button(gameDisplay, "Quit",550,450,100,50,red,bright_red, quitter.quitgame)
 
         pygame.display.update()
         clock.tick(15)
@@ -170,7 +152,7 @@ def game_loop():
     y = (display_height * 0.8)
     x_change = 0
     
-    levels = LvlReader.LevelReader().readInLevel(level_to_play)
+    levels = lvl_reader.LevelReader().readInLevel(level_to_play)
 
     thing_startx = levels[0]['x']
     thing_starty = levels[0]['y']
@@ -204,10 +186,10 @@ def game_loop():
                 x += x_change
     
                 gameDisplay.fill(white)
-                things(block['x'], thing_starty, block['w'], block['h'], tuple(block['color']))
+                drawing_creator.things(gameDisplay, block['x'], thing_starty, block['w'], block['h'], tuple(block['color']))
                 thing_starty += block['s']
-                bug(x,y)
-                things_dodged(dodged)
+                drawing_creator.bug(gameDisplay, x,y)
+                dodge_handler.things_dodged(gameDisplay, dodged)
     
                 if x > display_width - bug_width or x < 0:
                     crash()
@@ -224,9 +206,6 @@ def game_loop():
                 pygame.display.update()
                 clock.tick(60)
     levelPassed = True
-
-
-# https://pythonprogramming.net/pause-game-pygame/?completed=/converting-pygame-executable-cx_freeze/
 
 game_intro()
 game_loop()
