@@ -196,9 +196,10 @@ def game_loop():
                     nextBlock = True
     
                 if y < thing_starty+block_list[0]['h']:
-                    if x > block_list[0]['x'] and x < block_list[0]['x'] + block_list[0]['w']\
-                        or x+bug_width > block_list[0]['x'] and x + bug_width < block_list[0]['x']+block_list[0]['w']:
-                        crash()
+                    for block in block_list:
+                        if x > block['x'] and x < block['x'] + block['w']\
+                            or x+bug_width > block['x'] and x + bug_width < block['x']+block['w']:
+                            crash()
     
                 pygame.display.update()
                 clock.tick(60)
