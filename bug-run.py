@@ -6,12 +6,14 @@ import level_selector
 import dodge_counter
 import drawing_handler
 import quit_game
+import bug
 
 dodge_handler = dodge_counter.Dodge_Handler()
 level_selector = level_selector.Level_Selector()
 button_creator = button_handler.Button_Handler()
 drawing_creator = drawing_handler.Drawing_Handler()
 quitter = quit_game.Quit()
+player_bug = bug.Bug()
 
 pygame.init()
 
@@ -151,7 +153,7 @@ def game_loop():
     x =  (display_width * 0.45)
     y = (display_height * 0.8)
     x_change = 0
-    
+    crashed = False
     levels = lvl_reader.LevelReader().readInLevel(level_to_play)
 
     thing_starty = -600
@@ -194,15 +196,27 @@ def game_loop():
                     thing_starty = 0 - block_list[0]['h']
                     dodged += 1
                     nextBlock = True
+                    
+                    if crashed == True:
+                        player_bug.vulnerable = True
     
                 if y < thing_starty+block_list[0]['h']:
-                    for block in block_list:
+                    for block in block_list:                        
+                        crashed = False
                         if x > block['x'] and x < block['x'] + block['w']\
                             or x+bug_width > block['x'] and x + bug_width < block['x']+block['w']:
-                            crash()
-    
+                            if block['id'] == 1:
+                                if player_bug.vulnerable == True:
+                                    crash()
+                                else:
+                                    crashed = True
+
+                            if block['id'] == 2:
+                                player_bug.vulnerable = False                   
+                        
                 pygame.display.update()
                 clock.tick(60)
+    
     levelPassed = True
 
 game_intro()
