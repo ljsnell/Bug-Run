@@ -185,7 +185,7 @@ def game_loop():
                 gameDisplay.fill(white)
                 drawing_creator.things(gameDisplay, thing_starty, block_list)
                 thing_starty += block_list[0]['s']
-                drawing_creator.bug(gameDisplay, x,y)
+                drawing_creator.bug(gameDisplay, x,y, player_bug.vulnerable)
                 dodge_handler.things_dodged(gameDisplay, dodged)
     
                 if x > display_width - bug_width or x < 0:
