@@ -1,12 +1,12 @@
 import random
 import pygame
-import lvl_reader
 import button_handler
-import level_selector
-import dodge_counter
-import drawing_handler
-import quit_game
-import bug
+from level_utils import lvl_reader
+from level_utils import level_selector
+from level_utils import quit_game
+from drawing import dodge_counter
+from drawing import drawing_handler
+from objects import bug
 
 dodge_handler = dodge_counter.Dodge_Handler()
 level_selector = level_selector.Level_Selector()
@@ -16,7 +16,6 @@ quitter = quit_game.Quit()
 player_bug = bug.Bug()
 
 pygame.init()
-
 
 display_width = 800
 display_height = 600
