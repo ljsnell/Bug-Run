@@ -4,11 +4,11 @@ import button_handler
 
 class Drawing_Handler():
     button_creator = button_handler.Button_Handler()    
-    bugImg1 = pygame.image.load('Bug1.png')
+    bugImg1 = pygame.image.load('./imgs/Bug1.png')
     bugImg1 = pygame.transform.scale(bugImg1, (44, 44))
-    bugImg2 = pygame.image.load('Bug2.png')
+    bugImg2 = pygame.image.load('./imgs/Bug2.png')
     bugImg2 = pygame.transform.scale(bugImg2, (44, 44))
-    bugImg3 = pygame.image.load('Bug3.png')
+    bugImg3 = pygame.image.load('./imgs/Bug3.png')
     bugImg3 = pygame.transform.scale(bugImg3, (44, 44))
     animation_loop = 0
 
