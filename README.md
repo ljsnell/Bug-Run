@@ -10,6 +10,8 @@ Blocks fall from the top of the screen. The player needs to dodge them all in or
 # Running the game:
 Ensure python is installed and you can run python scripts.
 
+Ensure pip is installed (or your package manager of choice).
+
 Clone this repo locally, then enter _python bug-run.py_ and install requirements as needed. (The only extra library to install should be pygame).
 
 # Custom levels: 
