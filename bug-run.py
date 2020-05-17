@@ -42,6 +42,8 @@ levelPassed = False
 level_to_play = 'level1.json'
 level_counter = 0
 
+largeText = pygame.font.SysFont("comicsansms",115)
+
 def game_intro():
     global levelPassed
     intro = True    
@@ -57,8 +59,7 @@ def game_intro():
                     else:
                         nextLevel()
 
-        gameDisplay.fill(white)
-        largeText = pygame.font.Font('freesansbold.ttf',115)
+        gameDisplay.fill(white)        
         TextSurf, TextRect = button_creator.text_objects("Bug Run", largeText)        
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
@@ -90,12 +91,7 @@ def pickLvl():
     global level_to_play
     level_to_play = level_selector.lvlSelector()
 
-def message_display(text):
-    drawing_handler.text_display(text, gameDisplay, display_width, display_height)
-    game_loop()
-
-def paused():
-    largeText = pygame.font.SysFont("comicsansms",115)
+def paused():    
     TextSurf, TextRect = button_creator.text_objects("Paused", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
@@ -119,7 +115,6 @@ def unpause():
 
 def crash():    
     global levelPassed
-    largeText = pygame.font.SysFont("comicsansms",115)
     TextSurf, TextRect = button_creator.text_objects("You Crashed", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
@@ -159,8 +154,10 @@ def game_loop():
 
     thingCount = 1
     dodged = 0
-    
-    for block_list in levels:
+    # Add msg at start of level
+    drawing_creator.lvlTitle(gameDisplay, white, levels, display_width, display_height, largeText)
+
+    for block_list in levels['block_list']:
         nextBlock = False
         while not nextBlock:
                 for event in pygame.event.get():
@@ -195,7 +192,6 @@ def game_loop():
                     thing_starty = 0 - block_list[0]['h']
                     dodged += 1
                     nextBlock = True
-                    
                     if crashed == True:
                         player_bug.vulnerable = True
     

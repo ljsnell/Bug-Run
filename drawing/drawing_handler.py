@@ -43,14 +43,15 @@ class Drawing_Handler():
             if self.animation_loop > 15:
                 self.animation_loop = 0
 
-    def text_display(self, text, gameDisplay, display_width, display_height):
-        largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = button_creator.text_objects(text, largeText)
+    def things(self, gameDisplay, thing_starty, block_list):
+        for block in block_list:
+            pygame.draw.rect(gameDisplay, tuple(block['color']), [block['x'], thing_starty, block['w'], block['h']])
+
+    def lvlTitle(self, gameDisplay, color, levels, display_width, display_height, largeText):
+        gameDisplay.fill(color)
+        TextSurf, TextRect = self.button_creator.text_objects(levels['title'], largeText)
         TextRect.center = ((display_width/2),(display_height/2))
         gameDisplay.blit(TextSurf, TextRect)
         pygame.display.update()
         time.sleep(2)
-    
-    def things(self, gameDisplay, thing_starty, block_list):
-        for block in block_list:
-            pygame.draw.rect(gameDisplay, tuple(block['color']), [block['x'], thing_starty, block['w'], block['h']])
+        gameDisplay.fill(color)
